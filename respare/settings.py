@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b*8-dbaa)%cuk-ojs210*)xf=j*)zur2hh5(e-s2atp@!6y(d5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -87,11 +87,12 @@ DATABASES = {
     }
 }
 
+'''
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
     # '...
 }
-
+'''
 '''
 INTERNAL_IPS = [
     # ...
