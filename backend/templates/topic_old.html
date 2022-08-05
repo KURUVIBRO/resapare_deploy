@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Panther(2018)</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'topic.css'%}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Biryani:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    
+    <div class="nav">
+        <a class="logo" href="/">respare.</a>
+        <div class="categories nav">
+            <a href="categories">Categories</a>
+            <a href="about">About</a>
+            <a class="login" href="accounts/login.html">Login</a>
+            <input type="text" class="searchbox" placeholder="Search...">
+        </div>
+    </div>
+    
+    
+    <div class="topic-container">
+        <div class="topic-title">
+            <h1>{{ topic.title }}</h1>
+        </div>
+        <div class="topic-img">
+            <img src="{{topic.wide_image}}" alt="">
+            <div id="result" class="topic-result">
+                <h3>Public Opinion</h3>
+                <ul>
+                  {% for reaction in reactions %}
+                     <li>
+                      <div class="row1">
+                        
+                            <div><input onclick="f({{reaction.id}})" type="button" name="select" value="{{ reaction.option}}"></div>
+                        
+                                <div class="progress">
+                                    <div id="progress-fill{{reaction.id}}" class="progress-fill"></div>
+                                    <span id="progress-text{{reaction.id}}" class="progress-text">0%</span>
+                                </div>
+                                {% csrf_token %}
+                            
+                            
+                        </div>
+                    
+                      </li>
+                {%endfor%}
+                
+                </ul>
+             </div> 
+        
+        </div>
+        
+        <div class="top-details">
+            
+            <div class="topic-des">
+                <p>{{ topic.description }}</p>
+                </div>
+            </div>
+            <div class="comments">
+                <h3>Comments</h3>
+                <div class="comments-input">
+                    <textarea placeholder="What are your thought ?" type="text"></textarea>
+                    <button class="post">Post</button>
+                </div>
+            </div>
+        </div>
+       
+
+<script type="text/javascript">
+    function UpdateProgressBar(id,value){
+        //pBar.querySelector(pFill).style.width=`${value}%`;
+        //pBar.querySelector(pText).textContent=`${value}%`;
+        let s=String(value)+"%";
+        document.getElementById("progress-fill"+id).style.width=s;
+        document.getElementById("progress-text"+id).textContent=`${value}%`;
+    }
+    function check(){
+    fetch('reactstatus/',{
+        method:'POST',
+        headers:{
+            'X-CSRFToken': jQuery("input[name=csrfmiddlewaretoken]").val(),
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            id:0
+        })
+    }
+    ).then(response=>{return response.json()})
+    .then(data=>{
+    if (data!="0"){
+        console.log(data);
+            let sum=0;
+            data.forEach((u)=>{
+                sum+=u.count;
+            })
+            console.log("Sum="+sum);
+            let e;
+            let percent=100/sum;
+            data.forEach((u)=>{
+                //e=document.getElementById(u.id);
+                //e.innerHTML=u.count*percent+"%";
+                UpdateProgressBar(u.id,u.count*percent);
+            })
+        }
+    
+        }
+    )
+    }
+    check();
+    
+    function f(c_id){
+    fetch('react/',{
+        method:'post',
+        headers:{
+            'X-CSRFToken': jQuery("input[name=csrfmiddlewaretoken]").val(),
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            id:c_id
+        })
+        }).then(response => {
+            return response.json()
+         }).then(data =>{
+            if(data=="0")
+                window.location.href = "/signin";
+            else
+                check()
+          }
+         )
+    }
+   </script>
+</body>
+</html>

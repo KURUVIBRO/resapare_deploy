@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{topic.title}}</title>
+    {%load static%}
+    <link rel="stylesheet" href="{%static 'topic.css'%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@300;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    
+    <div class="nav">
+        <a class="logo" href="/">respare.</a>
+        <div class="categories nav">
+            <a href="categories">Categories</a>
+            <a href="about">About</a>
+            {%if user.is_authenticated %}
+            <a class="login">{{user.username}}</a>
+            <a class="Signout"  href="/signout">Sign Out</a>
+            {% else %}
+            <a class="login" href="/signin">Login</a>
+            {% endif %}
+            <input type="text" class="searchbox" placeholder="Search...">
+        </div>
+    </div>
+    
+
+    <div class="topic-container">
+        <div class="topic-title">
+            <h1>{{ topic.title }}</h1>
+        </div>
+        <div class="topic-img">
+            <img src="{{topic.wide_image}}" alt="">
+        </div>
+        <div id="result" class="topic-result">
+        
+            <ul class="topic-bar">
+                {% for reaction in reactions %}
+                 <li>
+                    <div class="row1">
+                        
+                            <input onclick="f({{reaction.id}})" type="button" name="select" value="{{ reaction.option}}">
+                            
+                            <div class="level">
+                                <div class="progress">
+                                    <div id="progress-fill{{reaction.id}}" class="progress-fill"></div>
+                                    <span id="progress-text{{reaction.id}}" class="progress-text">0%</span>
+                                </div>
+                                {% csrf_token %}
+                            
+                            </div>
+                   </div>
+                    
+                </li>
+                {%endfor%}
+                
+            </ul>
+            <div class="topic-des">
+            <p>{{ topic.description }}</p>
+           </div>
+           
+        </div>
+        
+        <div class="comment-section">
+            <h3>Comments</h3>
+            <div class="comments-input">
+                <textarea id="c-input" placeholder="What are your thoughts ?"></textarea>
+                {% csrf_token %}
+                <button class='post' onclick="comment()">Post</button>
+            </div>
+            <div id="comments" class="comments">
+                <script type="text/javascript">
+                    console.log("Loaded1");
+                </script>
+                
+            </div>
+        </div>
+            
+
+    </div>
+       
+
+<script type="text/javascript">
+       
+
+    function UpdateProgressBar(id,value){
+        //pBar.querySelector(pFill).style.width=`${value}%`;
+        //pBar.querySelector(pText).textContent=`${value}%`;
+        value=value.toFixed(0);
+        let s=String(value)+"%";
+        document.getElementById("progress-fill"+id).style.width=s;
+        document.getElementById("progress-text"+id).textContent=`${value}%`;
+    }
+    function check(){
+    fetch('reactstatus/',{
+        method:'POST',
+        headers:{
+            'X-CSRFToken': jQuery("input[name=csrfmiddlewaretoken]").val(),
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            id:0
+        })
+    }
+    ).then(response=>{return response.json()})
+    .then(data=>{
+    if (data!="0"){
+        console.log(data);
+            let sum=0;
+            data.forEach((u)=>{
+                sum+=u.count;
+            })
+            console.log("Sum="+sum);
+            let e;
+            let percent=100/sum;
+            data.forEach((u)=>{
+                //e=document.getElementById(u.id);
+                //e.innerHTML=u.count*percent+"%";
+                UpdateProgressBar(u.id,u.count*percent);
+            })
+        }
+    
+        }
+    )
+    }
+    check();
+    
+    async function comments(){
+        fetch('comments/',{
+            method:'get'
+        }).then(response=>{
+            return response.json()
+        }).then(data=>{
+            comments=document.getElementById("comments");
+            data.forEach((u)=>{
+                data_c="<div class='comment'><a>"+u.user+"</a><p>"+u.body+"</p></div>"
+                comments.insertAdjacentHTML('beforeend',data_c);
+            })
+            //console.log(data[0].user);
+            
+            //console.log(data[0], data_c);
+            
+        })
+    }
+    comments();
+    
+    function comment(){
+        textbox=document.getElementById("c-input");
+        fetch('comment/',{
+            method:'POST',
+            headers:{
+            'X-CSRFToken': jQuery("input[name=csrfmiddlewaretoken]").val(),
+            'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                body:textbox.value
+            })
+        }).then(response=>{return response.json()})
+        .then(data=>{
+            if(data=="0")
+                window.location.href = "/signin";
+            data_c="<div class='comment'><a>"+data.user+"</a><p>"+data.body+"</p></div>";
+            comments.insertAdjacentHTML('afterbegin',data_c);
+            textbox.value="";
+           // self.location.reload();
+        })
+        //$( '.comments').load(location.href+" .comments");
+       // $('#comments').load(document.URL +  ' #comments');
+    }
+    
+
+    
+    function f(c_id){
+    fetch('react/',{
+        method:'post',
+        headers:{
+            'X-CSRFToken': jQuery("input[name=csrfmiddlewaretoken]").val(),
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            id:c_id
+        })
+        }).then(response => {
+            return response.json()
+         }).then(data =>{
+            if(data=="0")
+                window.location.href = "/signin";
+            else
+                check()
+          }
+         )
+    }
+   </script>
+</body>
+</html>

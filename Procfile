@@ -1,0 +1,1 @@
+web:gunicorn respare.wsgi

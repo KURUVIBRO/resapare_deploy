@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create A New User</title>
+    
+
+    <link rel="stylesheet" type="text/css" href="{% static 'signup.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@300;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aleo:ital,wght@1,700&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <a href="/">Home</a>
+    <div class="head">
+      <label>Create your</label>
+      <h1>respare.</h1></div>
+
+    <!--<div class="background">-->
+   
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-control-label">First-Name</label>
+          <input type="text" id="fname" name="fname" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label">Second-Name</label>
+          <input type="text" id="lname" name="lname" class="form-control" i />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label">User-Name</label>
+          <input type="text" id="uname" name="uname" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label">Password</label>
+          <input type="password"id="pass1" name="pass1" background-image:
+          radial-gradient(circle, #5c0067 0%, #00d4ff 100%);"
+          class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-control-label">Confirm-Password</label>
+          <input type="password" id="pass2" name="pass2" class="form-control" />
+        </div>
+        <div class="login-btm login-button">
+          <button type="submit" class="btn btn-outline-primary">SUBMIT</button>
+        </div>
+        <a href="/signin">Already Have An Account?</a>
+      </form>
+    </div>
+
+   
+  </body>
+</html>

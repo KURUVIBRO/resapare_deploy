@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'signin.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@300;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Aleo:ital,wght@1,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <a href="/">Home</a>
+
+  <div class="head">
+    <label>Welcome to,</label>
+    <h1>respare.</h1></div>
+  
+      
+      <form action=""" method="post">
+      {% csrf_token %}
+       <div class="form-group">
+          <label class="form-control-label">Username</label>
+           <input type="text" id="uname" name="uname" class="form-control">
+      </div>
+      <div class="form-group">
+          <label class="form-control-label">Password</label>
+          <input type="password" id="pass1" name="pass1" class="form-control" >
+      </div>
+      <div class="login-btm login-button">
+          <button type="submit" class="btn btn-outline-primary">Submit</button>
+          
+        </div>
+        <div class="register form-control-label"><a href="/register">Dont Have An Account?</a></div>
+    </form>
+    <script type="text/javascript">
+      function signin(){
+        fetch("/signin",{
+        method:'POST',
+        headers:{
+            'X-CSRFToken': jQuery("input[name=csrfmiddlewaretoken]").val(),
+            'Content-Type':'application/json'
+        },
+        })then(response=>{return response.json()})
+        .then(data=>{
+            if(data="1")
+              console.log("1");
+        })
+      }
+    
+    </script>
+  
+
+
+
+
+
+
+  
+
+</body>
+
+</html>
