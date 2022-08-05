@@ -72,7 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'respare.wsgi.application'
 
-
+#asdad
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
