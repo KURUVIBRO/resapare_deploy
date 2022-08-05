@@ -1,1 +1,1 @@
-web:gunicorn respare.wsgi
+web: gunicorn respare.wsgi --log-file -
