@@ -88,12 +88,18 @@ DATABASES = {
     }
 }
 
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
+    # '...
+}
+
+'''
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     # ...
 ]
-
+'''
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
