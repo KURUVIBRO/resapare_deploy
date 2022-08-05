@@ -80,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'respare_new',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'USER':'root',
         'PASSWORD':'password@123'
 
